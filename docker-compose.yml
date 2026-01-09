@@ -1,0 +1,26 @@
+version: "5.0.0"
+
+services:
+  pg:
+    image: postgres:alpine
+    container_name: pg
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 0001
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg_data:/var/lib/postrgesql/data
+
+  bot:
+    build: .
+    image: exambot:alpine
+    container_name: exambot_con
+    restart: always
+    command: python3 /app/main.py
+
+    depends_on:
+      - pg
+
+volumes:
+  pg_data:
